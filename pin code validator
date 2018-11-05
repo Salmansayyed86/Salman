@@ -1,0 +1,71 @@
+package com.pin.validator;
+
+import java.util.Scanner;
+
+/**
+ * @author Salman Sayyed
+ *
+ */
+public class PinValidator {
+	
+	private String message= "";
+
+	public PinValidator() {}
+	
+	public static void main(String[] args){
+	
+		int n ;
+		PinValidator pv = new PinValidator();
+		Scanner sc = new Scanner(System.in);
+		do{
+			System.out.println("please enter 4 Digit pin");
+			n = sc.nextInt();
+		}while(String.valueOf(n).length()!=4);
+		
+		if (!pv.validate(n)) {
+			System.out.println(pv.message);
+			main(null);
+		}else 
+			System.out.println("your pin is saved");
+	}
+
+	public boolean validate(int n) {
+		
+		if(!checkSame(n)) return false;
+		
+		if(!checkSeries(n)) return false;
+		
+		return true;
+	}
+	
+	//check if it is same number #1111
+	public boolean checkSame(int n) {
+		int[] temp = convertDigitsToArray(n);
+		if(temp[0]== temp[1]) if(temp[1]== temp[2]) if(temp[2]== temp[3]) {
+			message = "your pin is same number"; 
+			return false;
+		}
+		return true;
+	}
+	
+	//check if it is series #1234	
+	public boolean checkSeries(int n) {
+		int[] temp = convertDigitsToArray(n);
+		if(temp[1]== ++temp[0]) if(temp[2]== ++temp[1]) if(temp[3]== ++temp[2]) {
+			message = "your pin is series";
+			return false;
+		}
+		return true;
+	}
+	
+	public int[] convertDigitsToArray(int n) {
+		int [] temp = new int[String.valueOf(n).length()];
+		int i =3;
+		do {
+			temp[i]= n%10;
+			n = n/10;
+			i--;
+		}while(n>0);
+		return temp;
+	}
+}
